@@ -1,0 +1,88 @@
+# Default configuration for counterfactual explanations
+
+# Data configuration
+data:
+  dataset: "iris"  # iris, synthetic
+  test_size: 0.3
+  random_state: 42
+  scaler_type: "minmax"  # minmax, standard
+
+# Model configuration
+model:
+  name: "random_forest"  # random_forest, logistic_regression, decision_tree
+  random_state: 42
+  random_forest:
+    n_estimators: 100
+    max_depth: null
+    min_samples_split: 2
+    min_samples_leaf: 1
+  logistic_regression:
+    max_iter: 1000
+    C: 1.0
+  decision_tree:
+    max_depth: null
+    min_samples_split: 2
+    min_samples_leaf: 1
+
+# Counterfactual methods configuration
+methods:
+  random_perturbation:
+    epsilon: 0.1
+    max_iterations: 1000
+    random_state: 42
+  
+  gradient_based:
+    learning_rate: 0.01
+    max_iterations: 1000
+    lambda_proximity: 1.0
+    lambda_sparsity: 0.1
+    random_state: 42
+  
+  alibi:
+    feature_range: [0.0, 1.0]
+    max_iterations: 1000
+    random_state: 42
+
+# Evaluation configuration
+evaluation:
+  metrics:
+    - proximity_euclidean
+    - proximity_manhattan
+    - proximity_cosine
+    - sparsity
+    - validity
+    - feasibility
+    - diversity
+  
+  thresholds:
+    sparsity_threshold: 1e-6
+    validity_threshold: 0.5
+
+# Visualization configuration
+visualization:
+  style: "seaborn-v0_8"
+  figure_size: [12, 8]
+  dpi: 300
+  save_format: "png"
+  
+  colors:
+    original: "skyblue"
+    counterfactual: "lightcoral"
+    change_positive: "green"
+    change_negative: "red"
+
+# Output configuration
+output:
+  save_plots: true
+  save_results: true
+  output_dir: "assets"
+  
+  formats:
+    plots: ["png", "pdf"]
+    results: ["json", "csv"]
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/counterfactual.log"
